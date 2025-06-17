@@ -1,0 +1,14 @@
+{
+  "name": "flat-proxy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nitropack dev",
+    "build": "nitropack build",
+    "start": "nitropack preview"
+  },
+  "dependencies": {
+    "h3": "^1.15.1",
+    "nitropack": "^2.11.9"
+  }
+}

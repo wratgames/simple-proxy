@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple TS Proxy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    input {
+      padding: 10px;
+      width: 400px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>TS Proxy</h1>
+  <input type="text" id="urlInput" placeholder="Enter full https:// URL to visit" />
+  <button onclick="go()">Go</button>
+
+  <script>
+    function go() {
+      const input = document.getElementById('urlInput').value.trim();
+      if (!input.startsWith('https://')) {
+        alert('Please enter a valid https:// URL.');
+        return;
+      }
+      const proxied = '/all?url=' + encodeURIComponent(input);
+      window.location.href = proxied;
+    }
+  </script>
+</body>
+</html>
