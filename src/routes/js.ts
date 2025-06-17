@@ -1,13 +1,12 @@
-// proxy.ts
 import { defineEventHandler, getQuery, createError, sendError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const { url } = getQuery(event)
 
-  if (!url || typeof url !== 'string') {
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) {
     return sendError(event, createError({
       statusCode: 400,
-      statusMessage: 'Missing or invalid URL'
+      statusMessage: 'Missing or invalid "url" parameter'
     }))
   }
 
@@ -15,25 +14,31 @@ export default defineEventHandler(async (event) => {
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0',
-        'Referer': url, // sometimes needed
+        'Referer': url
       }
     })
 
-    const contentType = response.headers.get('content-type') || 'application/octet-stream'
-    const buffer = await response.arrayBuffer()
+    if (!response.ok) {
+      return sendError(event, createError({
+        statusCode: response.status,
+        statusMessage: `Failed to fetch: ${response.statusText}`
+      }))
+    }
 
-    event.node.res.setHeader('Content-Type', contentType)
+    const jsContent = await response.text()
+
+    event.node.res.setHeader('Content-Type', 'application/javascript')
     event.node.res.setHeader('Access-Control-Allow-Origin', '*')
     event.node.res.setHeader('Access-Control-Allow-Headers', '*')
-    event.node.res.setHeader('Access-Control-Allow-Methods', '*')
+    event.node.res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
     event.node.res.setHeader('Cache-Control', 'no-cache')
 
-    return buffer
+    return jsContent
   } catch (err: any) {
-    console.error('Proxy error:', err)
+    console.error('[Proxy JS Error]', err)
     return sendError(event, createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch resource'
+      statusMessage: 'Internal server error while proxying JS'
     }))
   }
 })
