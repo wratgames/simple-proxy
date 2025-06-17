@@ -1,2 +1,0 @@
-rm pnpm-lock.yaml
-pnpm install
