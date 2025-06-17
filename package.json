@@ -1,23 +1,18 @@
 {
-  "name": "cf-proxy",
+  "name": "ts-proxy",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prepare": "nitropack prepare",
-    "dev": "nitropack dev",
-    "build": "nitropack build",
-    "build:cloudflare": "NITRO_PRESET=cloudflare npm run build",
-    "start": "node .output/server/index.mjs",
-    "lint": "eslint --ext .ts src/",
-    "lint:fix": "eslint --fix --ext .ts src/"
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "preview": "nuxi preview"
   },
   "dependencies": {
     "h3": "^1.15.1",
     "nitropack": "^2.11.9"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "eslint": "^8.57.1"
+    "nuxi": "^3.10.2",
+    "typescript": "^5.4.5"
   }
 }
